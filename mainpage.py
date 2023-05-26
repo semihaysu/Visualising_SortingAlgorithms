@@ -4,7 +4,7 @@ import time
 import math
 import random
 
-from tkinter import Canvas, Frame, StringVar, Tk, Label, Button, Scale, HORIZONTAL,Text
+from tkinter import Canvas, Frame, StringVar, Tk, Label, Button, Scale, HORIZONTAL,Text,Entry
 from tkinter import ttk
 
 from mergesort import mergeSort
@@ -33,18 +33,16 @@ allTypes = (
     'Bar Chart','Scatter Chart','Stem Chart',
 )
 selectedAlgo = StringVar()
-pauseBool = True
+pauseBool = False
 arr = []
-
+pasue = False
 
 #-----------------------------
 
 def generateRandomArray():
     #random array of non-repeating n elements
     global arr
-# if inputtxt.get(1.0,)=='':
-
-   
+    
     n = int(dataSize.get())
     arr = list(range(1, n + 1))
     random.shuffle(arr)
@@ -52,20 +50,12 @@ def generateRandomArray():
     arrayColor = ['red']  * n
 
     swapCount = 0
-    
+        
     displayArray(arr,arrayColor,swapCount)
- #else:
-  #  s=0
-   # for i in inputtxt.get(1.0,).split(","):
-    #  s=+1
-     
-   #   n = s
-    #  arr = list(range(1, n + 1))
-    #  print(i[0])   
-     #  arrayColor = ['red']  * n
-      
+    
+    
 
-    #swapCount = 0
+    
 
 def normalizeArray(arr):
     m = max(arr)
@@ -75,85 +65,111 @@ def displayArray(arr,arrayColor,opCount):
     outputCanvas.delete('all')
     
     if algoCombo1.get()=='Bar Chart':
-       
-     n = len(arr)
+        
+        n = len(arr)
 
-     outputCanvasHeight = 300 - 10
-     outputCanvasWidth = 950 - 20
+        outputCanvasHeight = 300 - 10
+        outputCanvasWidth = 950 - 20
 
-     barWidth = outputCanvasWidth/(n+1)
-     barspace = 5
-     initialspace = 10
-     normalizedArr = normalizeArray(arr)
+        barWidth = outputCanvasWidth/(n+1)
+        barspace = 5
+        initialspace = 10
+        normalizedArr = normalizeArray(arr)
 
-     for i,h in enumerate(normalizedArr):
-        #top - left                                           #|(x0,y0)-------------|
-        x0 = i*barWidth+initialspace+barspace                 #|                    |
-        y0 = outputCanvasHeight - h*350                       #|                    |
-                                                              #|                    |
-        #bottom-left                                          #|                    |
-        x1 = (i+1)*barWidth+initialspace                      #|                    |
-        y1 = outputCanvasHeight                               #|-------------(x1,y1)|
+        for i,h in enumerate(normalizedArr):
+            #top - left                                           #|(x0,y0)-------------|
+            x0 = i*barWidth+initialspace+barspace                 #|                    |
+            y0 = outputCanvasHeight - h*350                       #|                    |
+                                                                #|                    |
+            #bottom-left                                          #|                    |
+            x1 = (i+1)*barWidth+initialspace                      #|                    |
+            y1 = outputCanvasHeight                               #|-------------(x1,y1)|
 
-        outputCanvas.create_rectangle(x0,y0,x1,y1, fill = arrayColor[i])
+            outputCanvas.create_rectangle(x0,y0,x1,y1, fill = arrayColor[i])
 
-     swapCountLabel = Label(outputCanvas,text = '#Swap Count : '+str(opCount),fg = 'white',bg = 'black',font = ('Comic Sans MS',12))
-     outputCanvas.create_window(80,20,window = swapCountLabel)
-
-     root.update()
+        swapCountLabel = Label(outputCanvas,text = '#Swap Count : '+str(opCount),fg = 'white',bg = 'black',font = ('Comic Sans MS',12))
+        outputCanvas.create_window(80,20,window = swapCountLabel)
+        if pasue == False :
+           root.update()
 
     elif algoCombo1.get()=='Scatter Chart':
+            
         
-    
-        #print(algoCombo1.get())
-        
+            #print(algoCombo1.get())
+            
 
 
-        np.random.seed(42)
-        x = np.random.rand(50)
-        y = np.random.rand(50)
-        colors = np.random.rand(50)
-        sizes = 1000 * np.random.rand(50)
+            np.random.seed(42)
+            x = np.random.rand(50)
+            y = np.random.rand(50)
+            colors = np.random.rand(50)
+            sizes = 1000 * np.random.rand(50)
 
 
-        plt.scatter(x, y, c=colors, s=sizes, alpha=0.7, cmap='viridis')
+            plt.scatter(x, y, c=colors, s=sizes, alpha=0.7, cmap='viridis')
 
 
-        plt.xlabel('X Ekseni')
-        plt.ylabel('Y Ekseni')
-        plt.title('Scatter Grafiği')
+            plt.xlabel('X Ekseni')
+            plt.ylabel('Y Ekseni')
+            plt.title('Scatter Grafiği')
 
 
-        plt.colorbar()
-        plt.show()
-        
+            plt.colorbar()
+            plt.show()
+            
     elif algoCombo1.get()=='Stem Chart':
-     
-   
-         def stem_sort(arr):
-           n = len(arr)
+            n = len(arr)
+            outputCanvasHeight = 400 - 10
+            outputCanvasWidth = 950 - 20
 
-    for i in range(n):
-        for j in range(0, n-i-1):
-            if arr[j] > arr[j+1]:
-                arr[j], arr[j+1] = arr[j+1], arr[j]
+            barWidth = 5
+            barspace = 5
+            initialspace = 50
+            normalizedArr = normalizeArray(arr)
 
-                arr = [5, 2, 8, 1, 6, 3, 9, 4, 7]
-                stem_sort(arr)
+            for i,h in enumerate(normalizedArr):
+                    #top - left                                           #|(x0,y0)-------------|
+                    x0 = i*barWidth+initialspace+barspace                 #|                    |
+                    y0 = outputCanvasHeight - h*350                       #|                    |
+                                                                        #|                    |
+                    #bottom-left                                          #|                    |
+                    x1 = (i+1)*barWidth+initialspace                      #|                    |
+                    y1 = outputCanvasHeight                               #|-------------(x1,y1)|
+
+                    outputCanvas.create_rectangle(x0,y0,x1,y1, fill = arrayColor[i])
+
+            swapCountLabel = Label(outputCanvas,text = '#Swap Count : '+str(opCount),fg = 'white',bg = 'black',font = ('Comic Sans MS',12))
+            outputCanvas.create_window(80,20,window = swapCountLabel)
+
+            if pasue == False :
+             root.update()
+            
+    ('''def stem_sort(arr):
+            n = len(arr)
+
+        for i in range(n):
+                for j in range(0, n-i-1):
+                    if arr[j] > arr[j+1]:
+                        arr[j], arr[j+1] = arr[j+1], arr[j]
+                        arr = [5, 2, 8, 1, 6, 3, 9, 4, 7]
+                        stem_sort(arr)
+                        plt.clf()
+                        plt.stem(range(len(arr)), arr, use_line_collection=True)
+                        plt.xlabel('Index')
+                        plt.ylabel('Value')
+                        plt.title('Stem Sort')
+                        plt.pause(0.1)
+
+
                 plt.clf()
                 plt.stem(range(len(arr)), arr, use_line_collection=True)
                 plt.xlabel('Index')
                 plt.ylabel('Value')
-                plt.title('Stem Sort')
-                plt.pause(0.1)
+                plt.title('Stem Sort - Sorted')
+                plt.show()''')
+    
 
-
-            plt.clf()
-            plt.stem(range(len(arr)), arr, use_line_collection=True)
-            plt.xlabel('Index')
-            plt.ylabel('Value')
-            plt.title('Stem Sort - Sorted')
-            plt.show()
+           
 
 
             
@@ -177,15 +193,33 @@ lookup = {
 
 
 def startSort():
-   
+    
     global arr
     
     fn = lookup[algoCombo.get()]
     fn(arr, displayArray, sortSpeed.get, pauseBool)
    
     
+def stopSort():
+   pasue == True
 
+def Sort():
     
+    global arr
+    arr.clear()
+   # i= int(dataSize.get())
+    for i in inputtxt.get().split(","):
+      print(i[0])
+      arr.append(int(i[0]))
+
+    n = int(dataSize.get())
+ 
+    
+    arrayColor = ['red']  * n
+
+    swapCount = 0
+        
+    displayArray(arr,arrayColor,swapCount)
      
    
 
@@ -225,7 +259,7 @@ sortSpeed.grid(row = 3,column = 0,padx = 5,pady = 5,columnspan = 2)
 head = Label(inputFrame,text = 'Data Input -> ',fg = 'black',bg = '#ffff00',height = 1,width = 15,font = ('Comic Sans MS',14))
 head.grid(row = 4,column = 0,padx = 5,pady = 5)
 
-inputtxt = Text(inputFrame, height=1, width=30,
+inputtxt = Entry(inputFrame, 
                 bg = "white",
                 font = ('Comic Sans MS',18),
                 
@@ -234,11 +268,14 @@ inputtxt.grid(row = 4,column = 1,padx = 5,pady = 5,columnspan = 2)
 
 
 
-play = Button(inputFrame,text = 'Play',fg = 'black',bg = '#00ff00',height = 5,width = 10,font = ('Comic Sans MS',14),command = startSort )
+play = Button(inputFrame,text = 'Play',fg = 'black',bg = '#00ff00',height = 2,width = 10,font = ('Comic Sans MS',14),command = startSort )
 play.grid(row = 1,column = 2,padx = 5,pady = 5,rowspan = 2)
 
+play = Button(inputFrame,text = 'Stop',fg = 'black',bg = 'red',height = 2,width = 10,font = ('Comic Sans MS',14),command = stopSort )
+play.grid(row = 2,column = 2,padx = 5,pady = 5,rowspan = 2)
 
-
+play = Button(inputFrame,text = 'Generate',fg = 'black',bg = 'green',height = 1,width = 10,font = ('Comic Sans MS',14),command = Sort )
+play.grid(row = 3,column = 2,padx = 5,pady = 5,rowspan = 2)
 #--output frame------------------------------------------------------
 
 root.mainloop()
